@@ -32,7 +32,7 @@ let currentResult = defaultResult;
 // javasciprt는 초기화 하지 않아도 선언 가능하다.
 let test3;
 
-currentResult = (currentResult + 10) * 3 / 2 - 1;
+// currentResult = (currentResult + 10) * 3 / 2 - 1;
 
 /**
 위에서 값을 더할 때 연산자를 사용했다.
@@ -43,7 +43,7 @@ currentResult = (currentResult + 10) * 3 / 2 - 1;
 = <- 할당 연산자
 */
 
-outputResult(currentResult, "");
+// outputResult(currentResult, "");
 
 
 /**
@@ -66,7 +66,7 @@ let calculationDescription = `(${defaultResult} + 10) * 3 / 2 - 1`;
 let errorMessage = "An error \n" +
                    "occurred!";
 
-outputResult(currentResult, calculationDescription);
+// outputResult(currentResult, calculationDescription);
 
 /**
 템플릿 리터럴의 편리한 기능중 하나는 여러 행으로 된 문자열을
@@ -80,3 +80,85 @@ let test = `hello
 
 what????
 `;
+
+/**
+다음은 함수에 대해 알아보자
+강의자는 함수를 온디맨드 코드라 일컫는다.
+온디맨드 코드란 무엇일까?
+함수는 javascript 이외에도 많은 언어에서 존재하는 기능으로
+개발자가 추후에 실행할 수 있는 코드를 정의해준다.
+*/
+
+// (1)define function
+function greetUser(name) {
+    alert("Hi " + name);
+}
+
+/** 
+함수가 정의되면, 재미있는 것은 스크립트가 처음 실행 될 때
+함수가 즉시 실행되는 점이 아니라, 인식한 함수를 메모리에 저장한다.
+그 후에 함수를 호출함으로써 함수내 코드를 실행하게 된다.
+함수를 활용함으로써 훨씬 융퉁적인 작업이 가능하다는게 큰 장점이다.
+이를 컴포넌트(버튼, 탭)에 연결하여 액션이 일어났을 때만 함수를 동작하게 할 수 있다.
+*/
+
+// (2) call function
+// greetUser("Leem");
+
+/**
+자바스크립트의 함수들은 맨 하단에 작성되어도
+컴파일시에 자동적으로 스크립트 맨 위로 옮겨진다.
+하여 스크립트 태그 어느 위치에서도 함수를 작성할 수 있다. 
+*/
+
+// 짧은(한줄) 표현식에서는 세미콜론을 붙여야하고, 함수와 같은 중괄호 표현식은 붙이지 않는다.
+function add() {
+    currentResult = currentResult + userInput.value;
+    outputResult(currentResult, "");
+}
+
+// const additionResult = add(1, 2);
+
+// currentResult = add(1, 2);
+// outputResult(currentResult, calculationDescription);
+
+// 강의자는 보통 스크립트 전체를 구상할 때 함수를 윗부분에 두고
+// 스크립트 코드를 이후 아래에 작성한다고 한다.
+
+/**
+추가적으로 전역변수를 함수 내에서 사용하는 것은 권장하지 않는다.
+해당 전역변수가 늘어날 시에 함수를 이해하기 어렵게 만들고 
+어떤 일이 발생할지 예측하기 어렵기 때문이다.
+이처럼 함수 내에서만 변수를 사용하고 반환하는 함수를 순수함수라 부른다.
+
+javascript의 또 하나 중요 개념은
+함수는 주변의 모든 컨텍스트에 엑세스가 가능하지만
+변수는 스코프에 따라 엑세스가 불가능 할 수 있다 (내부 변수를 외부에서 사용하려 할 때)
+*/
+
+/** 
+- 섀도잉 변수
+만일 전역과 로컬에 같은 변수명을 사용하고 사용하면 어떻게 될까?
+이 때 javascript는 섀도잉이라는 작업을 수행하며
+함수나 특정 로컬 내에서 전역 변수명과 같은 변수가 있다면 항상 로컬 섀도우 변수를 참조하고
+존재하지 않는 경우에만 전역 변수를 사용한다고 이해하자.
+*/
+
+/** 
+- 함수 간접 실행
+아래와 같은 함수로 작성시 스크립트 컴파일 진행할 때 add 함수가 실행된다.
+addBtn.addEventListener("click", add(1, 2))
+
+아래와 같이 함수를 ()로 호출하지 않고 함수명을 정의한다면 
+스크립트 엔진에서 해당 엘리먼트의 click 이벤트가 발생했을시 add 함수를 호출한다. 
+이를 함수의 간접 실행이라고 일컫는다.
+*/
+addBtn.addEventListener("click", add);
+
+/**
+변경한 add 함수를 살펴보면 전역 변수를 참조한다.
+이런 함수에서와 같이 내부 상수와 외부 전역 값을 섞어서 사용하지 않고
+전역 값을 이용해서만 작동해 이벤트 리스너로만 사용하는 경우에는 괜찮은 함수라 정의할 수 있다.
+즉 명확한 함수를 생성하되, 내부 데이터, 일부 반환 값들과 과도하게 혼합해 사용하는 것이 좋지 않은 함수이다.
+*/
+
