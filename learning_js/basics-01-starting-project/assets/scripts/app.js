@@ -29,7 +29,6 @@ let logEntreis = [];
 4. let let -> 예약어도 사용할 수 없다.
 */
 
-
 // javasciprt는 초기화 하지 않아도 선언 가능하다.
 let test3;
 
@@ -45,7 +44,6 @@ let test3;
 */
 
 // outputResult(currentResult, "");
-
 
 /*
 javascript에는 여러 데이터 타입이 있는데
@@ -64,8 +62,7 @@ ${value}로 value안에 변수나 값을 참조할 수 있다.
 */
 let calculationDescription = `(${defaultResult} + 10) * 3 / 2 - 1`;
 // 일반 문자열의 경우 \n을 사용하여 개행이 가능하다. \를 문자열에 포함하기 위해선 \\로 입력하면 출력된다.
-let errorMessage = "An error \n" +
-                   "occurred!";
+let errorMessage = "An error \n" + "occurred!";
 
 // outputResult(currentResult, calculationDescription);
 
@@ -94,7 +91,7 @@ what????
 
 // (1)define function
 function greetUser(name) {
-    alert("Hi " + name);
+  alert("Hi " + name);
 }
 
 /*
@@ -213,7 +210,7 @@ alert처럼 내장함수로 포함되어 있는 parseInt 함수를 사용하면 
 
 // input tag에서 값 가져오는 기능
 function getUserInput() {
-    return parseInt(userInput.value);
+  return parseInt(userInput.value);
 }
 
 /*
@@ -231,51 +228,62 @@ userInput을 여러 군데에서 사용하는 것을 막기 위해 add 함수에
 
 // 계산식 로그 및 결과 로그 출력
 function createAndWriteLog(operator, resultBeforeCalc, calcNumber) {
-    const calDescription = `${resultBeforeCalc} ${operator} ${calcNumber}`;
-    outputResult(currentResult, calDescription); // from vendor file
+  const calDescription = `${resultBeforeCalc} ${operator} ${calcNumber}`;
+  outputResult(currentResult, calDescription); // from vendor file
+}
+
+// 코드 포맷팅 shift + alt + f
+function wrietToLog(
+  operationIdentifier,
+  prevResult,
+  opertaionNumber,
+  newResult
+) {
+    const logEntry = {
+        operation: operationIdentifier,
+        prevResult: prevResult,
+        operand: opertaionNumber,
+        result: newResult,
+      };
+      logEntreis.push(logEntry);
+      console.log(logEntreis);
 }
 
 // 섹터 1 -> 38번 이후 add 함수
 function add() {
-    const enteredNumber = getUserInput();
-    const initialResult = currentResult;
-    // currentResult = currentResult + enteredNumber; 와 동일
-    currentResult += enteredNumber;
-    createAndWriteLog("+", initialResult, enteredNumber);
-
-    const logEntry = {
-        operation: "ADD",
-        prevResult: initialResult,
-        operand: enteredNumber,
-        result: currentResult
-    };
-    logEntreis.push(logEntry);
-    console.log(logEntry.operation)
-    console.log(logEntreis);
+  const enteredNumber = getUserInput();
+  const initialResult = currentResult;
+  // currentResult = currentResult + enteredNumber; 와 동일
+  currentResult += enteredNumber;
+  createAndWriteLog("+", initialResult, enteredNumber);
+  wrietToLog('ADD', initialResult, enteredNumber, currentResult);
 }
 
 function subtract() {
-    const enteredNumber = getUserInput();
-    const initialResult = currentResult;
-    // currentResult = currentResult - enteredNumber; 와 동일
-    currentResult -= enteredNumber;
-    createAndWriteLog("-", initialResult, enteredNumber);
+  const enteredNumber = getUserInput();
+  const initialResult = currentResult;
+  // currentResult = currentResult - enteredNumber; 와 동일
+  currentResult -= enteredNumber;
+  createAndWriteLog("-", initialResult, enteredNumber);
+  wrietToLog('SUBTARCT', initialResult, enteredNumber, currentResult);
 }
 
 function multiply() {
-    const enteredNumber = getUserInput();
-    const initialResult = currentResult;
-    // currentResult = currentResult * enteredNumber; 와 동일
-    currentResult *= enteredNumber;
-    createAndWriteLog("*", initialResult, enteredNumber);
+  const enteredNumber = getUserInput();
+  const initialResult = currentResult;
+  // currentResult = currentResult * enteredNumber; 와 동일
+  currentResult *= enteredNumber;
+  createAndWriteLog("*", initialResult, enteredNumber);
+  wrietToLog('MULTIPLY', initialResult, enteredNumber, currentResult);
 }
 
 function divide() {
-    const enteredNumber = getUserInput();
-    const initialResult = currentResult;
-    // currentResult = currentResult / enteredNumber; 와 동일
-    currentResult /= enteredNumber;
-    createAndWriteLog("/", initialResult, enteredNumber);
+  const enteredNumber = getUserInput();
+  const initialResult = currentResult;
+  // currentResult = currentResult / enteredNumber; 와 동일
+  currentResult /= enteredNumber;
+  createAndWriteLog("/", initialResult, enteredNumber);
+  wrietToLog('DIVIDE', initialResult, enteredNumber, currentResult);
 }
 
 /*
@@ -341,3 +349,46 @@ objects.key 로 호출하면 된다.
 객체 내부에 함수를 저장할 수도 있지만, 지금은 기초 설명으로 다음에 알아보자
 
 */
+
+/*
+- null / undefined / NaN
+이 3개는 특별한 값이다.
+null과 undefined는 값인 동시에 데이터 유형이다.
+undefined -> 초기화 되지 않은 변수의 기본 값
+해당값은 직접 할당하면 안된다.
+null -> undefined과 유사하지만 데이터가 없다는 의미의 값이다.
+null은 절대 기본값으로 설정될 수 없다.
+
+undefined와 null은 빈 데이터를 관리할 때 중요하다
+이는 한번도 설정한 적이 없거나, 빈 데이터 즉 null로 설정해야 하는 데이터이기 때문이다.
+
+NaN -> 숫자가 아니라는 의미의 값이다
+NaN은 숫자 유형이기 때문에 계산하는 유형에서 사용할 수 있다.
+현재는 기초적인 개념만 머리에 넣고 추후 깊게 공부하자.
+*/
+
+/*
+- typeof
+typeof는 런타임에 해당 변수의 타입을 확인할 수 있다.
+
+userName = "Max";
+typeof userName
+'string'
+typeof 1
+'number'
+typeof 1.1
+'number'
+typeof true
+'boolean'
+typeof [1, 2, 3]
+'object'
+typeof {max:"max"}
+'object'
+typeof undefined
+'undefined'
+typeof null
+'object'
+typeof NaN
+'number'
+*/
+
