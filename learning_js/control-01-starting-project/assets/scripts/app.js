@@ -31,11 +31,14 @@ function writeToLog(
 
 // 표현식이 하나 일 때는 중괄호를 생략해도 되지만, 되도록 사용하는 것을 추천한다.
 function calculateResult(calculationType) {
+  const enteredNumber = getUserNumberInput();
+
   if (
     calculationType !== "ADD" &&
     calculationType !== "SUBTRACT" &&
     calculationType !== "MULTIPLY" &&
-    calculationType !== "DIVIDE"
+    calculationType !== "DIVIDE" ||
+    !enteredNumber
   ) {
     return;
   }
@@ -48,7 +51,7 @@ function calculateResult(calculationType) {
   // ) {
   // }
 
-  const enteredNumber = getUserNumberInput();
+  
   const initialResult = currentResult;
   let mathOperator;
   if (calculationType === "ADD") {

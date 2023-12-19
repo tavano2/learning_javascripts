@@ -40,9 +40,23 @@
     여러 조건문중 하나만 참이여도 통과시키고 싶을 때 사용하는 연산자가 존재한다.
     and(&&) : a와 b가 같을시
     or(||) : a 혹은 b 하나가 참일시
+
 - 연산자 우선 순위 이해하기
     https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence
     참고하여 우선 순위 확인
-- 반복문
-- 오류 처리
+
+- Falsy and Truthy Values -> app.js 참고
+    Falsy와 Truthy는 무엇일까? 기묘하고 특수한 자료 유형일까?
+    일반적으로 자바스크립트 조건문은 참 도는 거짓 불리언 값으로 작동한다.
+    그러나 Falsy와 Truthy 값으로도 동작한다.
+    if 문에서 무엇과도 비교하지 않고 불리언 값이 아닐시
+    변수에 0을 참조했다면 거짓으로 처리되고
+    음수를 포함한 다른 숫자는 참으로 처리된다.
+    "" 빈 문자열은 거짓
+    나머지 문자열은 참
+    객체나 배열이 비어있으면 거짓
+    채워져 있으면 참을 반환한다.
+    마지막으로 null,undefined,NaN은 거짓을 반환한다.
+
+    즉 불리언값이 아닌 값을 강제로 true/false로 변환하는 것을 말한다.
 */
