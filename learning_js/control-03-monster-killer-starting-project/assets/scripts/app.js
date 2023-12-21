@@ -12,16 +12,36 @@ const LOG_EVENT_MONSTER_ATTACK = "MONSTER_ATTACK";
 const LOG_EVENT_PLAYER_HEAL = "PLAYER_HEAL";
 const LOG_EVENT_GAME_OVER = "GAME_OVER";
 
-const enteredValue = parseInt(
-  prompt("Maximum life for you and the monster.", "100")
-);
+// javascript는 오류에 관대한 편이여서, parseInt 함수에 숫자를 넣지 않아도
+// 에러를 발생시키지 않는다.
+// 큰 어플리케이션을 개발하다보면 일부에 의도적으로 오류를 발생시킴으로써
+// 코드 여러 군데에 if문 대신 공식 오류 관리 도구를 사용해 오류를 처리할 수 있게 된다.
 
-let chosenMaxLife = enteredValue;
 let battleLog = [];
+let lastLoggedEntry;
 
-if (isNaN(chosenMaxLife) || chosenMaxLife <= 0) {
-  chosenMaxLife = 100;
+function getMaxListValues() {
+  const enteredValue = prompt("Maximum life for you and the monster.", "100");
+  const parsedValue = parseInt(enteredValue);
+  if (isNaN(parsedValue) || parsedValue <= 0) {
+    throw { message: "Invalid user input, not a number!" };
+  }
+  return parsedValue;
 }
+
+let chosenMaxLife;
+
+// 전체 스크립트를 try로 랩핑하지 말자.
+// 성능에 좋지 않을 뿐더러 아주 나쁜 프로그래밍 스타일이다.
+try {
+  chosenMaxLife = getMaxListValues();
+} catch (error) {
+  console.log(error);
+  // 폴백로직
+  chosenMaxLife = 100;
+  // throw error;
+}
+
 
 let currentMonsterHealth = chosenMaxLife;
 let currentPlayerHealth = chosenMaxLife;
@@ -36,39 +56,48 @@ function writeToLog(ev, val, monsterHealth, playerHealth) {
     finalMonsterHealth: monsterHealth,
     finalPlayerHealth: playerHealth,
   };
-  if (ev == LOG_EVENT_PLAYER_ATTACK) {
-    logEntry.target = "MONSTER";
-  } else if (ev === LOG_EVENT_PLAYER_STRONG_ATTACK) {
-    logEntry = {
-      event: ev,
-      value: val,
-      target: "MONSTER",
-      finalMonsterHealth: monsterHealth,
-      finalPlayerHealth: playerHealth,
-    };
-  } else if (ev === LOG_EVENT_MONSTER_ATTACK) {
-    logEntry = {
-      event: ev,
-      value: val,
-      target: "PLAYER",
-      finalMonsterHealth: monsterHealth,
-      finalPlayerHealth: playerHealth,
-    };
-  } else if (ev === LOG_EVENT_PLAYER_HEAL) {
-    logEntry = {
-      event: ev,
-      value: val,
-      target: "PLAYER",
-      finalMonsterHealth: monsterHealth,
-      finalPlayerHealth: playerHealth,
-    };
-  } else if (ev === LOG_EVENT_GAME_OVER) {
-    logEntry = {
-      event: ev,
-      value: val,
-      finalMonsterHealth: monsterHealth,
-      finalPlayerHealth: playerHealth,
-    };
+
+  switch (ev) {
+    case LOG_EVENT_PLAYER_ATTACK:
+      logEntry.target = "MONSTER";
+      break;
+    case LOG_EVENT_PLAYER_STRONG_ATTACK:
+      logEntry = {
+        event: ev,
+        value: val,
+        target: "MONSTER",
+        finalMonsterHealth: monsterHealth,
+        finalPlayerHealth: playerHealth,
+      };
+      break;
+    case LOG_EVENT_MONSTER_ATTACK:
+      logEntry = {
+        event: ev,
+        value: val,
+        target: "PLAYER",
+        finalMonsterHealth: monsterHealth,
+        finalPlayerHealth: playerHealth,
+      };
+      break;
+    case LOG_EVENT_PLAYER_HEAL:
+      logEntry = {
+        event: ev,
+        value: val,
+        target: "PLAYER",
+        finalMonsterHealth: monsterHealth,
+        finalPlayerHealth: playerHealth,
+      };
+      break;
+    case LOG_EVENT_GAME_OVER:
+      logEntry = {
+        event: ev,
+        value: val,
+        finalMonsterHealth: monsterHealth,
+        finalPlayerHealth: playerHealth,
+      };
+      break;
+    default:
+      break;
   }
   battleLog.push(logEntry);
 }
@@ -182,7 +211,38 @@ function healPlayerHandler() {
 }
 
 function printLogHandler() {
-  console.log(battleLog);
+  // while문 공부
+  let j = 0;
+  outerWhile : do {
+    console.log("Outer :: ", j);
+    innerFor: for (let k = 0; k < 5; k ++) {
+      if( k === 3) {
+        break outerWhile;
+      }
+      console.log("Inner :: ", k);
+    }
+    j++;
+  } while (j < 3);
+  // console.log(battleLog);
+  // 여기서 let i는 헬퍼 변수라고 불린다.
+  /*
+  for (let i = 0; i < battleLog.length; i++) {
+    console.log(battleLog[i]);
+  }
+  */
+  // for-of 문을 사용 했을 떄
+  let i = 0
+  for (const log of battleLog) {
+    if (!lastLoggedEntry && lastLoggedEntry !== 0 || lastLoggedEntry < i) {
+      console.log(`#${i}`);
+      for (const key in log) {
+        console.log(`${key} => ${log[key]}`);
+      }
+      lastLoggedEntry = i;
+      break;
+    }
+    i++;
+  }
 }
 
 attackBtn.addEventListener("click", attackHandler);
