@@ -53,7 +53,7 @@
     Elements - 렌더링된 html 태그에서 생성된 노드이며 내부에는 텍스트가 없다.
                 즉 요소 노드는 요소와 상호 작용하고, 요소의 스타일 및 콘텐츠를 변경하는 것에만 집중한다.
 
-- Querying Dom Nodes & Traversing the Dom
+- Querying Dom Nodes
 
     - getXByY로 요소를 한번 선택한 후에는 querySelector로만 선택 가능하다.
     - 다중 요소를 선택했을시에 for 같은 제어문 기능도 사용할 수 있다.
@@ -80,7 +80,34 @@
         ex) input.id
     그리고 속성 값은 변하지만 html 코드에 변하지 않는 값도 존재한다.
         ex) input.value
+
+- Traversing the Dom
+
+    요소를 선택하는데에 관련된 또 다른 개념이 하나 존재한다.
+    바로 Dom 트래버싱이다.
+    하나의 요소 즉 노드를 선택하면 해당되는 모든 자식 노드를 살펴보고 싶을 것이다.
+    이미 선택한 요소를 이용해서 이 요소를 기반으로 자식 혹은 형제 요소 등으로 옮겨 갈 수 있는 개념이 트래버싱이다.
+
+    child : 직접적인 자식 노드를 의미한다.
+    descendand : 직접 또는 간접적인 자식 노드를 의미한다.
+    parent : 직접적인 부모 노드를 의미한다.
+    ancestor : 직접 또는 간접적인 부모 노드를 의미한다.
+
+    그래서 이 트래버싱 기능을 도와주는 메서드는 무엇일까?
     
-- Creating & Removing DOM Nodes
+    부모, 조상 노드 선택 방법 : parentNode, parentElement, closest()
+    자식, 후손 노드 선택 방법 : childNodes, children, querySelector() ...
+    첫번째 자식 노드 찾는 방법 : firstChild, firstElementChild
+    마지막 자식 노드 찾는 방법 : lastchild, lastElementChild
+    이전 형제 요소 찾는 방법 : previousSibilng, previousElementSibling
+    다음 형제 요소 찾는 방법 : nextSibilng, nextElementSibling
+
+- Styling DOM Elements <- app.js 확인
+    - dom에 접근하여 스타일링을 변경할 수 있는데 다양한 방법이 존재한다.
+        - 스타일 속성 변경
+        - 클래스 네임으로 변경
+        - 클래스 배열으로 변경
+    
+- Creating & Inserting Elements
 
 */
