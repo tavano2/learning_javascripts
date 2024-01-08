@@ -103,11 +103,29 @@
     다음 형제 요소 찾는 방법 : nextSibilng, nextElementSibling
 
 - Styling DOM Elements <- app.js 확인
+
     - dom에 접근하여 스타일링을 변경할 수 있는데 다양한 방법이 존재한다.
         - 스타일 속성 변경
         - 클래스 네임으로 변경
         - 클래스 배열으로 변경
     
-- Creating & Inserting Elements
+- Creating & Inserting Elements (유데미 168번 참고자료 참고)
 
-*/
+    - 요소를 만들고 추가하는 방법에 대해 알아보자
+        1. HTML String - innerHTML => 기존, 자손 html 코드가 새로운 html 코드로 대체된다. (다시 렌더링 작업을 진행함)
+                         insertAdjacentHTML() -> 기존 Html을 리렌더링하지 않고, 첫번째 아규먼트에 속한 포지션대로 html을 추가해준다.
+           html 스트링 접근법의 단점은 브라우저에 렌더링할 요소나 콘텐츠를 알려줘서 모든 html 콘텐츠가 될 수있고
+           단일 요소가 필요 없으며 html 코드를 원하는 만큼 복잡해진다는 것이다.
+           즉 html만 삽입하기 떄문에 복잡한 html이 될 수록 요소를 선택하기 어려워 진다는 것이다.
+        2. createElement() - appendChild(), append(), prepend(), before(), after(), insertBefore(), replaceChild(), replaceWith(), insertAdjacentElement()
+        ※ 요소를 생성한 시점부터 이미 dom에 속해지기 때문에 (렌더링 완료) 추가한 요소를 다른 위치에 삽입할 때 복사되지 않고 새로운 위치로 이동한다.
+
+        element.cloneNode -> 노드를 복제해서 새로운 노드로 반환 arg depp -> false시 해당 요소만 복사, true시 전체 자식 요소와 전체 자손 요소가 복사됨
+
+- Removing Elements (유데미 168번 참고자료 참고)
+    
+    요소를 삭제할 떄 사용하는 메소드를 알아보자
+    remove() [익스플로어 제외]
+    익스플로어에서는 parentElement로 상위 요소에 접근 후 removeChild로 삭제한다.
+
+ */        
