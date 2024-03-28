@@ -34,4 +34,6 @@
         - 참조 변수는 전개 연산자와 같이 따로 깊은 복사를 해주어야 한다.
     객체 구조 분해
         - objects.js 참고
+    this 키워드, call(), apply(), getter,setter
+        - objects.js 참고
 */
