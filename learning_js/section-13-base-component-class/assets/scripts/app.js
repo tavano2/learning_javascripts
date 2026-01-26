@@ -9,6 +9,7 @@ class DOMHelper {
     const element = document.getElementById(elementId);
     const destinationElement = document.querySelector(newDestinationSelector);
     destinationElement.append(element);
+    element.scrollIntoView({behavior: 'smooth'});
   }
 }
 
@@ -38,9 +39,10 @@ class Component {
 }
 
 class Tooltip extends Component {
-  constructor(closeNotifierFunction) {
-    super();
+  constructor(closeNotifierFunction, text, hostElementId) {
+    super(hostElementId);
     this.closeNotifier = closeNotifierFunction;
+    this.text = text;
     this.create();
   }
 
@@ -52,7 +54,29 @@ class Tooltip extends Component {
   create() {
     const tooltipElement = document.createElement('div');
     tooltipElement.className = 'card';
-    tooltipElement.textContent = 'DUMMY!';
+    // 이와 같은 템플릿 사용시 긴 html 코드의 스니펫이라면
+    // 좀 더 코드가 보기 깔끔하게 append가 가능하다.
+    const tooltipTemplate = document.getElementById('tooltip');
+    const tooltipBody = document.importNode(tooltipTemplate.content, true);
+    tooltipBody.querySelector('p').textContent = this.text;
+    tooltipElement.append(tooltipBody);
+
+    const hostElPosLeft = this.hostElement.offsetLeft;
+    const hostElPosTop = this.hostElement.offsetTop;
+    const hostElHeight = this.hostElement.clientHeight;
+    // 만일 스크롤이 있는 html이라면 스크롤의 길이와 높이까지 계산해야한다.
+    const parentElScrolling = this.hostElement.parentElement.scrollTop;
+
+    const x = hostElPosLeft + 20;
+    const y = hostElPosTop + hostElHeight - parentElScrolling- 10;
+
+    tooltipElement.style.position = 'absolute';
+    // js에서 dom 내 offseet 값은 읽기 전용이므로 css에 접근하여 변경해야한다.
+    tooltipElement.style.left = x + 'px';
+    tooltipElement.style.top = y + 'px';
+
+
+
     tooltipElement.addEventListener('click', this.closeTooltip);
     this.element = tooltipElement;
   }
@@ -72,9 +96,14 @@ class ProjectItem {
     if (this.hasActiveTooltip) {
       return;
     }
+    const projectElement = document.getElementById(this.id);
+    // console.log(projectElement.dataset);
+    // 아래와 같이 자바스크립트로 데이터셋을 수동 추가해도 html 데이터셋에 등록됨
+    // projectElement.dataset.somInfo = "test";
+    const tooltipText = projectElement.dataset.extraInfo;
     const tooltip = new Tooltip(() => {
       this.hasActiveTooltip = false;
-    });
+    }, tooltipText, this.id);
     tooltip.attach();
     this.hasActiveTooltip = true;
   }
@@ -84,7 +113,7 @@ class ProjectItem {
     const moreInfoBtn = projectItemElement.querySelector(
       'button:first-of-type'
     );
-    moreInfoBtn.addEventListener('click', this.showMoreInfoHandler);
+    moreInfoBtn.addEventListener('click', this.showMoreInfoHandler.bind(this));
   }
 
   connectSwitchButton(type) {
@@ -146,6 +175,30 @@ class App {
     finishedProjectsList.setSwitchHandlerFunction(
       activeProjectsList.addProject.bind(activeProjectsList)
     );
+
+    // 동적 스크립트 만들어보기
+    // const someScript = document.createElement('script');
+    // someScript.textContent = 'alert("Hi there");';
+    // document.head.append(someScript);
+
+    // 아래와 같이 정적 메소드를 이벤트리스너로 호출 할 시
+    // 호출 시점에 startAnalytics에 담긴 js가 다운로드 되면서 스크립트가 실행된다.
+    // document.getElementById('start-analytics-btn')
+    //     .addEventListener('click', this.startAnalytics);
+
+    // 한번만 작동하는 타이머
+    const timerId = setTimeout(this.startAnalytics, 3000);
+    document.getElementById('stop-analytics-btn')
+        .addEventListener('click', () => {
+          clearTimeout(timerId);
+        });
+  }
+
+  static startAnalytics() {
+    const analyticsScript = document.createElement('script');
+    analyticsScript.src = 'assets/scripts/analytics.js';
+    analyticsScript.defer = true;
+    document.head.append(analyticsScript);
   }
 }
 
